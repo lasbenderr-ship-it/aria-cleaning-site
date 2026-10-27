@@ -1,0 +1,80 @@
+/* Changes agreed in the Oct 6, 2026 huddle, layered over the ported Webflow styles. */
+
+/* Quote form in the hero */
+.hero-video.hero--with-form { height: auto; min-height: 600px; padding-top: 4rem; padding-bottom: 4rem; }
+.hero--with-form .hero__container { display: flex; align-items: center; justify-content: space-between; gap: 3rem; position: relative; z-index: 1; }
+.hero--with-form .hero-content { max-width: 34rem; flex: 1; }
+.hero__form { flex: 0 0 420px; }
+.hero__form .cform-wrapper { border: 0; box-shadow: 0 20px 40px rgba(0, 0, 0, .25); max-width: none; }
+.hero__form .paragraph-2 { color: #fff; font-size: .8125rem; line-height: 1.4; margin: .75rem 0 0; text-shadow: 0 1px 2px rgba(0, 0, 0, .6); }
+.hero__btns { display: flex; flex-wrap: wrap; gap: .75rem; }
+.hero__btn--quote { display: none; }
+.hero--with-form .bbb-container { position: absolute; top: 0; left: 0; right: 0; }
+.hero--with-form::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0, 0, 0, .45), rgba(0, 0, 0, .1)); pointer-events: none; }
+.hero--with-form video { z-index: -1; }
+
+/* Trust bar */
+.trust-bar { background: var(--midnight-blue); color: #fff; padding: 1.5rem 0; }
+.trust-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.5rem; }
+.trust-item { display: flex; align-items: center; gap: .75rem; font-family: Dosis, sans-serif; font-weight: 600; font-size: 1.0625rem; line-height: 1.2; }
+.trust-item svg { width: 34px; height: 34px; flex: none; color: var(--aria-green); }
+
+/* Industries grid reuses the service card look */
+.industries-grid { grid-template-columns: repeat(6, 1fr); }
+.industries-grid .service-item-wrap { grid-column: span 2; }
+.industry-icon svg { width: 100%; height: 100%; color: #000; }
+
+/* Closing CTA */
+.cta-band { background: var(--aria-green); color: #fff; padding: 3.5rem 0; }
+.cta-band__inner { display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+.cta-band__heading { margin: 0; font-family: Dosis, sans-serif; font-size: 2.25rem; font-weight: 600; }
+.cta-band__text { margin: .5rem 0 0; font-size: 1.0625rem; }
+.cta-band__btns { display: flex; flex-wrap: wrap; gap: .75rem; flex: none; }
+.cta-band .btn-cta { background: #fff; color: var(--midnight-blue); }
+.cta-band .btn-cta--ghost { background: transparent; color: #fff; box-shadow: inset 0 0 0 2px #fff; }
+.btn-cta { transition: transform .15s ease, filter .15s ease; }
+.btn-cta:hover { filter: brightness(1.05); }
+.btn-cta:active { transform: scale(.97); }
+
+/* About page video */
+.intro-video { position: relative; aspect-ratio: 16 / 9; max-width: 900px; margin: 3rem auto 0; border-radius: 6px; overflow: hidden; background: #000; }
+.intro-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+html { scroll-behavior: smooth; }
+#quote { scroll-margin-top: 120px; }
+
+@media screen and (max-width: 991px) {
+  .hero--with-form .hero__container { flex-direction: column; align-items: stretch; }
+  .hero--with-form .hero-content { max-width: none; }
+  .hero__form { flex: none; width: 100%; max-width: 520px; }
+  .trust-list { grid-template-columns: repeat(3, 1fr); }
+  .industries-grid { grid-template-columns: repeat(3, 1fr); }
+  .industries-grid .service-item-wrap { grid-column: auto; }
+  .cta-band__inner { flex-direction: column; align-items: flex-start; }
+}
+@media screen and (max-width: 767px) {
+  .hero-video.hero--with-form { padding-top: 3rem; }
+  .trust-list { grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .trust-item { font-size: .9375rem; }
+  .trust-item svg { width: 28px; height: 28px; }
+  .industries-grid { grid-template-columns: 1fr 1fr; }
+  .cta-band__heading { font-size: 1.75rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .btn-cta { transition: none; }
+}
+
+.hero__form .cform__label { display: block; color: #000; }
+.industry-icon svg, .industry-icon svg * { fill: none !important; stroke: #000; }
+.hero__form .checkbox__label { color: #000; }
+.hero--with-form .bbb-container { display: none; }
+.trust-item img { width: 34px; height: 34px; flex: none; background: #fff; border-radius: 4px; padding: 3px; }
+button.intro-video { display: block; width: 100%; padding: 0; border: 0; cursor: pointer; }
+.intro-video img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .4s cubic-bezier(.2, .8, .2, 1); }
+button.intro-video:hover img { transform: scale(1.02); }
+.intro-video__play { position: absolute; left: 50%; top: 50%; width: 84px; height: 84px; margin: -42px 0 0 -42px; border-radius: 50%; background: var(--aria-green); box-shadow: 0 8px 24px rgba(0, 0, 0, .3); transition: transform .15s ease; }
+.intro-video__play::after { content: ""; position: absolute; left: 34px; top: 26px; border-style: solid; border-width: 16px 0 16px 26px; border-color: transparent transparent transparent #fff; }
+button.intro-video:active .intro-video__play { transform: scale(.95); }
+button.intro-video:focus-visible { outline: 3px solid var(--aria-green); outline-offset: 4px; }
+.w-dyn-empty { display: none; }
