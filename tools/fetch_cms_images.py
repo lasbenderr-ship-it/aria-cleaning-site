@@ -1,11 +1,11 @@
 """Download CMS images still served from Webflow's CDN into images/cms/ and point the pages at them.
 
-usage: fetch_cms_images.py SITE_DIR   (needs network access to uploads-ssl.webflow.com)
+usage: fetch_cms_images.py SITE_DIR   (needs network access to cdn.prod.website-files.com)
 """
 import sys, os, re, urllib.request, urllib.parse
 
 SITE = sys.argv[1]
-PAT = re.compile(r'https://uploads-ssl\.webflow\.com/[0-9a-f]+/[0-9a-f]+_([^"\'\s,)<&]+)')
+PAT = re.compile(r'https://(?:uploads-ssl\.webflow\.com|cdn\.prod\.website-files\.com)/[0-9a-f]+/[0-9a-f]+_([^"\'\s,)<&]+)')
 dest = os.path.join(SITE, 'images', 'cms')
 os.makedirs(dest, exist_ok=True)
 for dp, _, fs in os.walk(SITE):

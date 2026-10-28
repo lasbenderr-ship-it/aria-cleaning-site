@@ -4,7 +4,7 @@ usage: cms.py SITE_DIR CSV_DIR ARTICLE_TEMPLATE EXPORT_INDEX
 ARTICLE_TEMPLATE is detail_knowledge-hub.html already run through localize.py and staticize.py.
 EXPORT_INDEX is the untouched index.html from the Webflow export (source of the testimonial card markup).
 """
-import sys, os, csv, copy, re
+import sys, os, csv, copy, re, io
 from datetime import datetime
 from bs4 import BeautifulSoup
 
@@ -13,7 +13,8 @@ PREFIXED = re.compile(r'^(https?:|//|#|mailto:|tel:|data:|javascript:|/)')
 
 def rows(name):
     with open(os.path.join(CSV_DIR, name + '.csv'), encoding='utf-8-sig') as f:
-        return [r for r in csv.DictReader(f) if r['Archived'] != 'true' and r['Draft'] != 'true']
+        text = f.read().replace('https://uploads-ssl.webflow.com/', 'https://cdn.prod.website-files.com/')  # legacy CDN host
+    return [r for r in csv.DictReader(io.StringIO(text)) if r['Archived'] != 'true' and r['Draft'] != 'true']
 
 def published(r):
     return datetime.strptime(r['Original Publish Date'][:24], '%a %b %d %Y %H:%M:%S')
@@ -31,7 +32,7 @@ def drop_empty(lst):
         e.decompose()
 
 testimonials = rows('Testimonials')
-befores = rows('Before_and_Afters')
+befores = sorted(rows('Before_and_Afters'), key=lambda r: datetime.strptime(r['Created On'][:24], '%a %b %d %Y %H:%M:%S'), reverse=True)  # live site order
 contact = rows('Contact_Details')[0]
 articles = sorted(rows('Knowledge_Hub_Articles'), key=published, reverse=True)
 
@@ -62,7 +63,8 @@ def fill_before_afters(soup):
         old.decompose()
     for r in befores:
         t = copy.copy(tmpl)
-        before, after = t.select('.ba-slider__img')
+        # Webflow binds the base layer to the after shot and the draggable overlay to the before shot.
+        after, before = t.select('.ba-slider__img')
         for img, key in ((before, 'Before Image'), (after, 'After Image')):
             unbind(img)
             img['src'] = r[key]
